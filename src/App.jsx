@@ -8,7 +8,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { GetCommand, PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
-const client = new DynamoDBClient({});
+const client = new DynamoDBClient({'region': 'ap-southeast-1'});
 const docClient = DynamoDBDocumentClient.from(client);
 
 const testman = {id:"12345", name:"Bay Stonefield", age:"35", pos:"Developer"};
@@ -25,6 +25,7 @@ const getEmployeeByID = (id) => new Promise(async (resolve, reject) => {
       console.log(response);
       resolve(response);
   } catch (ex) {
+      console.log(ex);
       reject(ex.message);
   }
 });
@@ -41,9 +42,9 @@ const putEmployee = (id, name, age, position) => new Promise(async (resolve, rej
         },
       });
       const response = await docClient.send(command);
-      console.log(`Unexpected status code: ${response.$metadata.httpStatusCode}`);
       resolve(response);
   } catch (ex) {
+      console.log(ex);
       reject(ex.message);
   }
 });
