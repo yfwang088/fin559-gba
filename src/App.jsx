@@ -8,7 +8,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { GetCommand, PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
-const client = new DynamoDBClient({'region': 'ap-southeast-1'});
+const client = new DynamoDBClient({
+  "region": process.env.REACT_APP_REGION,
+  "credentials": {
+    "accessKeyId": process.env.REACT_APP_ACCESSKEY, 
+    "secretAccessKey": process.env.REACT_APP_SECRETACCESSKEY,
+  },
+  });
 const docClient = DynamoDBDocumentClient.from(client);
 
 const testman = {id:"12345", name:"Bay Stonefield", age:"35", pos:"Developer"};
@@ -22,7 +28,6 @@ const getEmployeeByID = (id) => new Promise(async (resolve, reject) => {
         },
       });
       const response = await docClient.send(command);
-      console.log(response);
       resolve(response);
   } catch (ex) {
       console.log(ex);
@@ -63,7 +68,9 @@ const App = () => {
 
   const b1Click = async () => {
     setB1Running(true);
-    await getEmployeeByID(testman.id).catch((ex)=>{
+    await getEmployeeByID(testman.id).then((data) =>{
+      console.log(data.Item);
+    }).catch((ex)=>{
       console.log(ex);
     });
     setB1Running(false);
