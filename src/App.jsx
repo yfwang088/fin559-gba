@@ -18,7 +18,7 @@ const getEmployeeByID = (id) => new Promise(async (resolve, reject) => {
       const command = new GetCommand({
         TableName: "EmployeeData",
         Key: {
-          ID: id,
+          "ID": id,
         },
       });
       const response = await docClient.send(command);
@@ -34,14 +34,14 @@ const putEmployee = (id, name, age, position) => new Promise(async (resolve, rej
       const command = new PutCommand({
         TableName: "EmployeeData",
         Item: {
-          ID: id,
-          Name: name,
-          Age: age,
-          Position: position,
+          "ID": id,
+          "Name": name,
+          "Age": age,
+          "Position": position,
         },
       });
       const response = await docClient.send(command);
-      console.log(response);
+      console.log(`Unexpected status code: ${response.$metadata.httpStatusCode}`);
       resolve(response);
   } catch (ex) {
       reject(ex.message);
@@ -102,7 +102,7 @@ const App = () => {
           onClick={b1Click}
           disabled={b1Running||b2Running}
         >
-        Add
+        Search
         </Button>
         <Button
           variant='outlined'
@@ -111,7 +111,7 @@ const App = () => {
           onClick={b2Click}
           disabled={b1Running||b2Running}
         >
-        Search
+        Add
         </Button>
       </nav>
         </Container>
