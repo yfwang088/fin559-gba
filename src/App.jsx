@@ -103,7 +103,6 @@ const App = () => {
     await putEmployee(IDText, nameText,ageText,posText).then(setResultText('Success! A new employee has been recorded.')).catch((ex)=>{
       setResultText(ex.message);
     });
-    setResultText('Success!')
     setB1Running(false);
   };
   
@@ -111,11 +110,10 @@ const App = () => {
     setB2Running(true);
     await getEmployeeByID(searchText).then((data) =>{
       if(data.Item){
-        setResultText(`${data.Item.ID},${data.Item.Name},${data.Item.Age},${data.Item.Position}`);
+        setResultText(`ID:${data.Item.ID}, Name:${data.Item.Name}, Age:${data.Item.Age}, Position:${data.Item.Position}.`);
       }else{
         setResultText("ID does not match existing record.");
       }
-      console.log(data.Item);
     }).catch((ex)=>{
       console.log(ex);
     });
